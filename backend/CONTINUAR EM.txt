@@ -1,1 +1,1 @@
-CONTINUAR NA AULA: 01-11 Banco de dados H2, camadas
+CONTINUAR NA AULA: 01-12 Transações e sessão JPA
