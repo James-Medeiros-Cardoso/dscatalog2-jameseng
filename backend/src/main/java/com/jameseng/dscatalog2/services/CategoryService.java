@@ -1,6 +1,7 @@
 package com.jameseng.dscatalog2.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,19 @@ public class CategoryService {
 		 * CategoryDTO(x)).collect(Collectors.toList()); return listDto;
 		 */
 		return list.stream().map(x -> new CategoryDTO(x)).collect(Collectors.toList());
+	}
+
+	@Transactional(readOnly = true)
+	public CategoryDTO findById(Long id) {
+		// busca o objeto Category por id
+		// Optional = nunca será um objeto nulo (pode ter ou não a categoria)
+		Optional<Category> obj = repository.findById(id);
+
+		// Obtem o objeto e larga na variável entity
+		Category entity = obj.get();
+
+		// Converte a entity para CategoryDTO e retorna
+		return new CategoryDTO(entity);
 	}
 
 }
