@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jameseng.dscatalog2.dto.CategoryDTO;
 import com.jameseng.dscatalog2.entities.Category;
 import com.jameseng.dscatalog2.repositories.CategoryRepository;
+import com.jameseng.dscatalog2.services.exceptions.EntityNotFoundException;
 
 //tem também: @Component e @Repository para outras
 @Service // registrar a classe como um componente do sistema de injeção de dep. do Spring
@@ -37,7 +38,7 @@ public class CategoryService {
 		Optional<Category> obj = repository.findById(id);
 
 		// Obtem o objeto e larga na variável entity
-		Category entity = obj.get();
+		Category entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity not found on id = " + id));
 
 		// Converte a entity para CategoryDTO e retorna
 		return new CategoryDTO(entity);
