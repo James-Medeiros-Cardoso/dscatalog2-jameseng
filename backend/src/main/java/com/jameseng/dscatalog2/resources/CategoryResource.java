@@ -1,13 +1,17 @@
 package com.jameseng.dscatalog2.resources;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.jameseng.dscatalog2.dto.CategoryDTO;
 import com.jameseng.dscatalog2.services.CategoryService;
@@ -44,6 +48,19 @@ public class CategoryResource {
 		// .ok = resposta 200 = sucesso
 		// .body(dto) = entidade DTO no corpo da resposta
 		return ResponseEntity.ok().body(dto);
+	}
+
+	@PostMapping // inserir novo recurso
+	public ResponseEntity<CategoryDTO> insert(@RequestBody CategoryDTO dto) {
+
+		// @RequestBody = reconher o objeto enviado na requisição e vincular ao dto
+
+		dto = service.insert(dto);
+
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
+
+		// created() = retorna o código 201
+		return ResponseEntity.created(uri).body(dto); // tem que retornar código 201 = recurso criado
 	}
 
 }

@@ -1,1 +1,1 @@
-CONTINUAR NA AULA: 01-17 Tratamento de exceções
+CONTINUAR NA AULA: 01-18 Inserindo nova categoria com POST
