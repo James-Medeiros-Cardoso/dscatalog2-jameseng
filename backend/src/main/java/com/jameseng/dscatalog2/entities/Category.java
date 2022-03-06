@@ -1,11 +1,15 @@
 package com.jameseng.dscatalog2.entities;
 
 import java.io.Serializable;
+import java.time.Instant;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 @Entity // javax.persistence - será uma entidade no Banco de Dados
@@ -17,6 +21,12 @@ public class Category implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // id será autoincrementavel no banco de dados
 	private Long id;
 	private String name;
+
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE") // entende que será o UTC (GMT zero)
+	private Instant createdAt; // Instante = armazena dia e hora
+
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE") // entende que será o UTC (GMT zero)
+	private Instant updatedAt; // Instante = armazena dia e hora
 
 	public Category() {
 	}
@@ -40,6 +50,24 @@ public class Category implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Instant getCreatedAt() {
+		return createdAt;
+	}
+
+	@PrePersist // sempre que chamar o save do Jpa, vai executar o prePersist
+	public void prePersist() {
+		createdAt = Instant.now();
+	}
+
+	public Instant getUpdatedAt() {
+		return updatedAt;
+	}
+
+	@PreUpdate // sempre que der um save para atualizar Jpa, vai executar o preUpdate
+	public void preUpdate() {
+		updatedAt = Instant.now();
 	}
 
 	@Override

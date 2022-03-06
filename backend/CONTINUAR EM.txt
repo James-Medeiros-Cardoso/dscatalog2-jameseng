@@ -1,1 +1,1 @@
-CONTINUAR NA AULA: 01-18 Inserindo nova categoria com POST
+CONTINUAR NA AULA: 01-20 Deletando categoria com DELETE
