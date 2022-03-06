@@ -1,14 +1,14 @@
 package com.jameseng.dscatalog2.services;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,14 +26,25 @@ public class CategoryService {
 	private CategoryRepository repository;
 
 	// (readOnly=true) = evitar looking no banco de dados, melhor performance
-	@Transactional(readOnly = true) // Transactional = garantir integridade nas transações (do pacote spring)
-	public List<CategoryDTO> findAll() {
-		List<Category> list = repository.findAll();
-		/*
-		 * List<CategoryDTO> listDto=list.stream().map(x -> new
-		 * CategoryDTO(x)).collect(Collectors.toList()); return listDto;
-		 */
-		return list.stream().map(x -> new CategoryDTO(x)).collect(Collectors.toList());
+	/*
+	 * @Transactional(readOnly = true) // Transactional = garantir integridade nas
+	 * transações (do pacote spring) public List<CategoryDTO> findAll() {
+	 * List<Category> list = repository.findAll();
+	 * 
+	 * //List<CategoryDTO> listDto=list.stream().map(x -> new
+	 * //CategoryDTO(x)).collect(Collectors.toList()); return listDto;
+	 * 
+	 * return list.stream().map(x -> new
+	 * CategoryDTO(x)).collect(Collectors.toList()); }
+	 */
+
+	@Transactional(readOnly = true)
+	public Page<CategoryDTO> findAllPaged(PageRequest pageRequest) {
+
+		Page<Category> list = repository.findAll(pageRequest);
+
+		// converte a lista de Category em CategoryDTO e retorna ao controller
+		return list.map(x -> new CategoryDTO(x));
 	}
 
 	@Transactional(readOnly = true)
@@ -77,14 +88,12 @@ public class CategoryService {
 	public void delete(Long id) {
 		try {
 			repository.deleteById(id);
-		}
-		catch (EmptyResultDataAccessException e) {
+		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException("Id " + id + " not found.");
-		}
-		catch (DataIntegrityViolationException e) {
+		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException("Integrity violation");
 		}
-		
+
 	}
 
 }

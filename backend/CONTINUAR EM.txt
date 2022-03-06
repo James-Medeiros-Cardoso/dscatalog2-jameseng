@@ -1,1 +1,1 @@
-CONTINUAR NA AULA: 01-20 Deletando categoria com DELETE
+CONTINUAR NA AULA: 01-22 Paginação
