@@ -2,12 +2,15 @@ package com.jameseng.dscatalog2.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -27,6 +30,9 @@ public class Category implements Serializable {
 
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE") // entende que será o UTC (GMT zero)
 	private Instant updatedAt; // Instante = armazena dia e hora
+
+	@ManyToMany(mappedBy = "categories") // já mapeado na entidade Product
+	private Set<Product> products = new HashSet<>();
 
 	public Category() {
 	}
@@ -68,6 +74,10 @@ public class Category implements Serializable {
 	@PreUpdate // sempre que der um save para atualizar Jpa, vai executar o preUpdate
 	public void preUpdate() {
 		updatedAt = Instant.now();
+	}
+
+	public Set<Product> getProducts() {
+		return products;
 	}
 
 	@Override
