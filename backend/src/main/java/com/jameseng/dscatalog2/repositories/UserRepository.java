@@ -8,4 +8,7 @@ import com.jameseng.dscatalog2.entities.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
+	// findByEmail = retorna um usuário conforme email informado
+	User findByEmail(String email);
+
 }

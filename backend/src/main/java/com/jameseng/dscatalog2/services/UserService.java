@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jameseng.dscatalog2.dto.RoleDTO;
 import com.jameseng.dscatalog2.dto.UserDTO;
 import com.jameseng.dscatalog2.dto.UserInsertDTO;
+import com.jameseng.dscatalog2.dto.UserUpdateDTO;
 import com.jameseng.dscatalog2.entities.Role;
 import com.jameseng.dscatalog2.entities.User;
 import com.jameseng.dscatalog2.repositories.RoleRepository;
@@ -33,7 +34,7 @@ public class UserService {
 	@Autowired
 	private RoleRepository roleRepository;
 
-	@Autowired 
+	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
 	@Transactional(readOnly = true)
@@ -74,7 +75,7 @@ public class UserService {
 	}
 
 	@Transactional
-	public UserDTO update(Long id, UserDTO dto) {
+	public UserDTO update(Long id, UserUpdateDTO dto) {
 		try {
 			User entity = repository.getOne(id); // getOne vai instanciar uma nova entidade sem tocar no banco, com
 													// id
