@@ -1,1 +1,1 @@
-CONTINUAR NA AULA: 03-24 Externalizando configuração, variáveis de ambiente
+CONTINUAR NA AULA: 03-27 Configuração especial para o banco H2
