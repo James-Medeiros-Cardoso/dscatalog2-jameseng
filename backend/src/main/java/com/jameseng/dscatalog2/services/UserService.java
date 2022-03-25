@@ -4,11 +4,16 @@ import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +31,10 @@ import com.jameseng.dscatalog2.services.exceptions.ResourceNotFoundException;
 
 //tem também: @Component e @Repository para outras
 @Service // registrar a classe como um componente do sistema de injeção de dep. do Spring
-public class UserService {
+public class UserService implements UserDetailsService {
+
+	// instaniando um objeto Logger exibir menssagens no console
+	private static Logger logger = LoggerFactory.getLogger(UserService.class);
 
 	@Autowired // instancia de injeção de dependencia do Repository
 	private UserRepository repository;
@@ -112,6 +120,18 @@ public class UserService {
 			entity.getRoles().add(role);
 		}
 
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+		User user = repository.findByEmail(username);
+		if (user == null) {
+			logger.error("Email " + username + " not found at database."); // aparece no console
+			throw new UsernameNotFoundException("Email " + username + " not found at database.");
+		}
+		logger.info("User " + username + " found at database."); // aparece no console
+		return user;
 	}
 
 }
