@@ -1,1 +1,1 @@
-CONTINUAR NA AULA: 03-27 Configuração especial para o banco H2
+CONTINUAR NA AULA: 03-31 Reaproveitando a infraestrutura do DSCatalog
